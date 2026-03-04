@@ -1,0 +1,135 @@
+#import "lib/kernal.asm"
+#import "macros.asm"
+#import "zero.asm"
+
+enter_fullscreen:
+        lda #0
+        sta multicolour
+        jmp _enter_fullscreen
+
+enter_fullscreen_multi:
+        lda #8
+        sta multicolour
+        jmp _enter_fullscreen
+
+_enter_fullscreen:
+        lda #1
+        eor fullscreen
+        sta fullscreen
+        cmp #0
+        bne !+
+        jmp !++++++
+!:       lda #144
+        jsr chrout
+        cls()
+        ldy #[box_colour-box_origin]
+        clc      
+        lda [boxColB+jmp_header_size],Y        
+        asl
+        asl
+        asl
+        asl
+        ora #8
+        ora [boxColR+jmp_header_size],Y      
+        sta VIC_screen
+        
+        lda [boxColA+jmp_header_size],Y        
+        asl
+        asl
+        asl
+        asl     
+        sta VIC_volume               
+        
+        lda VIC_rows
+        and #129
+        ora #1+[2*11]
+        sta VIC_rows
+        lda VIC_char_mem
+        and #240
+        ora #12
+        sta VIC_char_mem
+        
+        lda VIC_columns
+        and #128
+        ora #20
+        sta VIC_columns
+        
+        lda VIC_h_center
+        and #254
+        ora #6
+        sta VIC_h_center
+
+        lda #46
+        sta VIC_v_center                         
+        
+        //Clear character map
+        lda #<bitmap
+        sta _chptr
+        lda #>bitmap
+        sta _chptr+1
+!:      lda #$0
+        ldy #0
+!:      sta (_chptr),Y
+        dey
+        bne !-
+        inc _chptr+1
+        lda _chptr+1
+        cmp #$20
+        bne !--
+        
+        //character grid
+chargrid:
+        lda #16
+        ldy #0
+        clc
+!:      sta screen_mem_hi,Y
+        adc #1
+        iny
+        cpy #242
+        bne !-
+
+        //Character colour
+        ldy #[box_colour-box_origin]
+        lda [boxColP+jmp_header_size],Y
+        
+        ora multicolour // set multicolour mode
+              
+        ldy #0
+!:      sta colour_mem_hi,Y
+        iny
+        cpy #242
+        bne !-
+        
+        rts
+
+leave_fullscreen:
+        lda #0
+        cmp fullscreen
+        beq !+
+        sta fullscreen
+!:      cls()
+        screen_col(black, black)
+       
+        lda VIC_rows
+        and #128
+        ora #[2*23]
+        sta VIC_rows
+        
+        lda VIC_columns
+        and #128
+        ora #22
+        sta VIC_columns
+        
+        lda VIC_h_center
+        and #128
+        ora #12      
+        sta VIC_h_center 
+        
+        lda #38
+        sta VIC_v_center                
+        
+        lda VIC_char_mem
+        and #240
+        sta VIC_char_mem
+        lda #0           
+        rts

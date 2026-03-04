@@ -1,0 +1,10 @@
+#!/bin/sh
+IMAGE=automata
+OPTIONS=_mvtpb1b2b3
+
+c1541 -format "$IMAGE,woo" d64 automata.d64
+c1541 -attach $IMAGE.d64 -write build/automataVIC.prg automata.prg
+
+c1541 -attach $IMAGE.d64 -list
+# cp $IMAGE.d64 /Volumes/Thumb/$IMAGE$OPTIONS.d64
+xvic -memory 24k -joydev1 2 -autostart $IMAGE.d64

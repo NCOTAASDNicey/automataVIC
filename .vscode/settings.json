@@ -1,0 +1,5 @@
+{
+  "vs64.buildArgs": "",
+  "vs64.viceExecutable": "/Applications/vice-x86-64-gtk3-3.10/bin/xvic",
+  "vs64.viceArgs": "-memory 24k"
+}

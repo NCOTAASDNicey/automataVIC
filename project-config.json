@@ -1,0 +1,11 @@
+{
+  "name": "automataVIC",
+  "description": "Project automataVIC",
+  "toolkit": "kick",
+  "sources": ["automata.asm"],
+  "build": "debug",
+  "definitions": [],
+  "includes": [],
+  "args": [],
+  "compiler": ""
+}
