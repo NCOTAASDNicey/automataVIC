@@ -8,21 +8,6 @@
 .const bottom_left = 7
 .const fill = 8
 
-.const COLUMNS=40
-.const ROWS=25
-.const PIXELS_PER_BYTE=4
-.const BYTES_PER_CHAR=8
-.const BUFFER_LENGTH=COLUMNS*PIXELS_PER_BYTE
-.const RULE_LENGTH=10
-.const HELP_COL=1
-.const HELP_ROW=23
-
-get:
-        jsr construct
-        ldy variable
-        lda (this),Y
-        rts
-
 select:
         jsr construct
         ldy #[box_select-box_origin]
@@ -204,13 +189,13 @@ noColourFill:
         printptratpos(box_legend,box_x,box_y)
 
 //print help
- !:     lda box_help
+ !:     lda boxHelp
         beq !+
         lda box_select
         beq !+
         printat(str_help_blank,HELP_COL,HELP_ROW)
         lda #0 // test
-        printptrat(box_help,HELP_COL,HELP_ROW)
+        printptrat(boxHelp,HELP_COL,HELP_ROW)
 !:      jmp empty
        
         
@@ -338,11 +323,7 @@ _key_handledf:
 
 !:      cmp #82 //R for Random rule
         bne !+
-        toggleBoxChecked(boxRR)
-
-!:      cmp #79 //O for Scroll
-        bne !+
-        toggleBoxChecked(boxScroll)         
+        toggleBoxChecked(boxRandom)        
 
 !:      cmp #88 //X for Exit
         bne !+

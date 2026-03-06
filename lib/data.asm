@@ -1,7 +1,7 @@
 #importonce
-* = $2F00 "Data"
+* = $3000 "Data"
 // globals
-_target: .word 0
+destination: .word 0
 _scratch: .byte 0,0,0,0
 method: .byte 0
 field: .byte 0
@@ -32,7 +32,7 @@ box_colour: .byte 0
 box_frame_colour: .byte 0
 box_style: .word 0
 box_legend: .word 0
-// box_help: .word 0
+box_help: .word 0
 box_select: .byte 0
 box_check: .byte 0
 box_edited: .byte 0
@@ -47,6 +47,6 @@ box_colour_working: .byte 0
 // args for flow
 keys_pressed: .byte 0
 
-cellbuffer1: .fill BUFFER_LENGTH+2, 0
-cellbuffer2: .fill BUFFER_LENGTH+2, 0
+cellbuffer1: .fill MONO_BUFFER_LENGTH+2, 0
+cellbuffer2: .fill MONO_BUFFER_LENGTH+2, 0
 pixel_acc: .byte 0
