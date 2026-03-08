@@ -189,7 +189,7 @@ noColourFill:
         printptratpos(box_legend,box_x,box_y)
 
 //print help
- !:     lda boxHelp
+ !:     lda box_help
         beq !+
         lda box_select
         beq !+
@@ -227,8 +227,7 @@ _colframe:
 !:      dey
         sta (_chptr),Y
         bne !-
-        lda #0
-        rts
+        jmp empty
         
 _colbox:
 !:      lda box_colour_working
@@ -247,9 +246,7 @@ _colbox:
         bne !--
         ldy #method_detail
         jsr reinvokevirtual
-        lda #0
-        rts 
-
+        jmp empty
         
 handlekey:
         jsr construct
@@ -274,8 +271,7 @@ handlekey:
         ldy #method_escape
         jmp reinvokevirtual
 
-        !:     lda #0 //Dont signal program end
-        rts
+!:      jmp empty
                   
                                             
 flowKey:

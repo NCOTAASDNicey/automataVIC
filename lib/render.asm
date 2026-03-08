@@ -17,22 +17,17 @@ rule4index:
 
 automata:
         jsr enter_fullscreen
-        lda #0
-        cmp fullscreen
-        beq !+
         jsr initialise_ptrs_automata
         jsr initialise_cells_automata
-!:      lda #0
-        rts
+        jmp empty
         
 continue:
-        lda #0
-        cmp fullscreen
+        lda fullscreen
         beq !+
         jsr initialise_ptrs_automata4
         jsr _render_automata_row
-!:       lda #0
-        rts         
+!:      jmp empty
+         
         
 initialise_ptrs_automata:
         // initate pointers
@@ -239,30 +234,25 @@ _render_automata_col:
         lda row_counter
         cmp #0
         beq !+
-        jmp _render_automata_row
-                
-!:      lda #0 //Dont signal exit 
-        rts
+        jmp _render_automata_row                
+!:      jmp empty
+
 
 
 automata4:
         jsr enter_fullscreen_multi
-        lda #0
-        cmp fullscreen
-        beq !+
+        // lda fullscreen
+        // beq !+
         jsr initialise_ptrs_automata4
         jsr initialise_cells_automata4
-!:      lda #0
-        rts
+!:      jmp empty
         
 continue4:
-        lda #0
-        cmp fullscreen
+        lda fullscreen
         beq !+
         jsr initialise_ptrs_automata4
         jsr _render_automata_row4
-!:      lda #0
-        rts            
+!:      jmp empty           
         
 initialise_ptrs_automata4:
         // initate pointers
@@ -298,16 +288,16 @@ _one_cell_init4:
         jmp  _render_automata_row4
        
 _random_init4:
-       lda $A2
-       clc
-       ldy #[4*20]+2                
-!:     adc 0,Y
-       pha
-       and #03
-       sta (_tempptr),Y
-       pla
-       dey
-       bne !-
+        lda $A2
+        clc
+        ldy #[4*20]+2                
+!:      adc 0,Y
+        pha
+        and #03
+        sta (_tempptr),Y
+        pla
+        dey
+        bne !-
                               
 _render_automata_row4:
         clc
@@ -460,5 +450,4 @@ _render_automata_col4:
         beq !+
         jmp _render_automata_row4
                 
-!:      lda #0 //Dont signal exit 
-        rts
+!:      jmp empty

@@ -72,7 +72,7 @@ boxHelp:
 box(lable_vtable,0,0,0,row6,22,3,1,1,blue,blue,styleHelp,0)
 
 boxRuleBinary:
-box(binaryrule_vtable,ruleStr,0,0,row2+1,10,3,1,1,white,white,styleWidget,0)
+box(binaryrule_vtable,ruleStr,0,4,row2,12,5,2,2,white,white,styleWidget,1)
 
 boxRun:
 box(confirmboxes_vtable,runStr,0,17,row2,5,5,1,2,selected_col,edge_col,styleAction,0)
@@ -102,7 +102,7 @@ boxColA:
 colourBox(auxStr,19,row3,blue)
     
 boxExit:
-box(exitboxes_vtable,exitStr,0,16,row5,6,3,1,1,white,red,styleAction,0)
+box(exitboxes_vtable,exitStr,0,16,row5,6,3,1,1,red,red,styleAction,0)
 
 boxFinal:
 box(boxes_vtable,exitStr,0,1,1,X_CHARS-2,Y_CHARS-2,2,2,white,red,styleSelected,0)

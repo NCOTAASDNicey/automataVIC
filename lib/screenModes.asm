@@ -10,18 +10,12 @@ enter_fullscreen:
 enter_fullscreen_multi:
         lda #8
         sta multicolour
-        jmp _enter_fullscreen
 
-_enter_fullscreen:
-        lda #1
-        eor fullscreen
-        sta fullscreen
-        cmp #0
-        bne !+
+_enter_fullscreen:        
+        lda fullscreen
+        beq !+
         jmp !++++++
-!:       lda #144
-        jsr chrout
-        cls()
+!:      cls()
         ldy #[box_colour-box_origin]
         clc      
         lda [boxColB+jmp_header_size],Y        
@@ -78,7 +72,6 @@ _enter_fullscreen:
         bne !--
         
         //character grid
-chargrid:
         lda #16
         ldy #0
         clc
@@ -99,15 +92,14 @@ chargrid:
         iny
         cpy #242
         bne !-
-        
+!:      lda #1
+        sta fullscreen        
         rts
 
 leave_fullscreen:
-        lda #0
-        cmp fullscreen
+        lda fullscreen
         beq !+
-        sta fullscreen
-!:      cls()
+        cls()
         screen_col(black, black)
        
         lda VIC_rows
@@ -131,5 +123,6 @@ leave_fullscreen:
         lda VIC_char_mem
         and #240
         sta VIC_char_mem
-        lda #0           
+ !:     lda #0
+        sta fullscreen
         rts

@@ -14,7 +14,7 @@
 .const MONO_BUFFER_LENGTH=COLUMNS*MONO_PIXELS_PER_BYTE
 .const RULE_LENGTH=10
 .const HELP_COL=1
-.const HELP_ROW=23
+.const HELP_ROW=21
 
 #import "lib/macros.asm"
 #import "lib/zero.asm"
@@ -32,7 +32,7 @@ mainProg:
         cls()
         screen_col(black, black)
 
-        lda #2
+        lda #0
         sta selected
         callMethod(method_render, _boxlist)
 
@@ -41,9 +41,11 @@ _main_loop:
         sty keypress
         callMethod(method_key, _boxlist)
         lda return
-        pha    
+        pha
+        lda fullscreen
+        bne !+  
         callMethod(method_render, _boxlist)
-        pla
+ !:     pla
         cmp #0
         bne done
         jmp _main_loop    
