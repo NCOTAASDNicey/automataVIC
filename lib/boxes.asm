@@ -42,7 +42,7 @@ flow:
 .word keys_pressed 
 .byte 0
 
-.macro box(vtable,str,help,x,y,w,h,xo,yo,scol,ecol,style,selected) {
+.macro boxflagged(vtable,str,help,x,y,w,h,xo,yo,scol,ecol,style,selected,checked) {
   jmp vtable
   .byte BOX_DATA_SIZE
   .word box_origin 
@@ -54,8 +54,12 @@ flow:
   .word str
   .word help
   .byte selected
-  .byte 0
+  .byte checked
   .byte 0  
+}
+
+.macro box(vtable,str,help,x,y,w,h,xo,yo,scol,ecol,style) {
+  boxflagged(vtable,str,help,x,y,w,h,xo,yo,scol,ecol,style,0,0)
 }
 
 .const row1=0
@@ -66,28 +70,28 @@ flow:
 .const row6=20
 
 title:
-box(lable_vtable,automataStr,0,0,row1,22,3,1,1,yellow,yellow,styleTitle,0)
+box(lable_vtable,automataStr,0,0,row1,22,3,1,1,yellow,yellow,styleTitle)
 
 boxHelp:
-box(lable_vtable,0,0,0,row6,22,3,1,1,blue,blue,styleHelp,0)
+box(lable_vtable,0,0,0,row6,22,3,1,1,blue,blue,styleHelp)
 
 boxRuleBinary:
-box(binaryrule_vtable,ruleStr,0,4,row2,12,5,2,2,white,white,styleWidget,1)
+boxflagged(binaryrule_vtable,ruleStr,0,4,row2,12,5,2,2,white,white,styleWidget,1,0)
 
 boxRun:
-box(confirmboxes_vtable,runStr,0,17,row2,5,5,1,2,selected_col,edge_col,styleAction,0)
+box(confirmboxes_vtable,runStr,0,17,row2,5,5,1,2,selected_col,edge_col,styleAction)
 
 boxRule4Index:
-box(rule4IndexVtable,indStr,0,0,row4+1,3,3,0,-1,white,white,styleWidget,0)
+box(rule4IndexVtable,indStr,0,0,row4+1,3,3,0,-1,white,white,styleWidget)
 
 boxRuleBit4:
-box(bit4rule_vtable,str_rule4,0,3,row4,14,5,2,2,white,white,styleWidget,0)
+box(bit4rule_vtable,str_rule4,0,3,row4,14,5,2,2,white,white,styleWidget)
 
 boxRun4:
-box(confirmboxes4_vtable,runStr,0,17,row4,5,5,1,2,selected_col,edge_col,styleAction,0)
+box(confirmboxes4_vtable,runStr,0,17,row4,5,5,1,2,selected_col,edge_col,styleAction)
 
 boxRandom:
-toggleBox(rndStr,0,2,row3,0,-1)
+toggleBox(rndStr,0,2,row3,0,-1,1)
 
 boxColB:
 colourBox(bordStr,7,row3,green)
@@ -102,10 +106,10 @@ boxColA:
 colourBox(auxStr,19,row3,blue)
     
 boxExit:
-box(exitboxes_vtable,exitStr,0,16,row5,6,3,1,1,red,red,styleAction,0)
+box(exitboxes_vtable,exitStr,0,16,row5,6,3,1,1,red,red,styleAction)
 
 boxFinal:
-box(boxes_vtable,exitStr,0,1,1,X_CHARS-2,Y_CHARS-2,2,2,white,red,styleSelected,0)
+box(boxes_vtable,exitStr,0,1,1,X_CHARS-2,Y_CHARS-2,2,2,white,red,styleSelected)
 
 .var boxesList = List().add(boxRuleBinary,boxRun,boxRule4Index,boxRuleBit4,boxRun4,boxRandom,boxColB,boxColR,boxColP,boxColA,boxExit)
 .const boxes_interactive_size = boxesList.size()

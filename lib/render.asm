@@ -47,10 +47,8 @@ initialise_ptrs_automata:
 
 initialise_cells_automata:        
         // clear and initailise src buffer
-        ldy #[box_check-box_origin]
-        lda [boxRandom+jmp_header_size],Y
-        cmp #0
-        beq _random_init              
+        isBoxChecked(boxRandom)
+        bne _random_init              
 
 _one_cell_init:      
         ldy #[8*20]        
@@ -272,10 +270,8 @@ initialise_ptrs_automata4:
 
 initialise_cells_automata4:     
         // clear and initailise src buffer
-        ldy #[box_check-box_origin]
-        lda [boxRandom+jmp_header_size],Y
-        cmp #0
-        beq _random_init4              
+        isBoxChecked(boxRandom)
+        bne _random_init4              
 
 _one_cell_init4:      
         ldy #[4*20]+2        

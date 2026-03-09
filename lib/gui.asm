@@ -332,7 +332,7 @@ _key_handledf:
         lda selected
         jsr _boxListAt
 
-        lda #2
+        lda #4
         sta selected
 
         lda #method_select

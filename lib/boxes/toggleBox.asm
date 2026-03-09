@@ -30,7 +30,7 @@ render_toggle:
         sta (_chptr),Y
         jmp empty
 
-.macro toggleBox(str,help,x,y,xo,yo){
-    box(toggleBoxesVtable,str,help,x,y,3,3,xo,yo,selected_col,edge_col,styleAction,0)
+.macro toggleBox(str,help,x,y,xo,yo,state){
+    boxflagged(toggleBoxesVtable,str,help,x,y,3,3,xo,yo,selected_col,edge_col,styleAction,0,state)
 }
 
