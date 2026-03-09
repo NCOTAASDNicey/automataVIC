@@ -325,14 +325,30 @@ _key_handledf:
         bne !+
         jmp exit
 
-!:      cmp #78 //N for run
+!:      cmp #133 //N for run
         bne !+
+        lda #1
+        pha
+        jsr actionKey
+        pla
+
+!:      cmp #137 //N for run
+        bne !+
+        lda #4
+        pha
+        jsr actionKey
+        pla                           
+
+!:      jmp empty
+
+actionKey:
         lda #method_deselect
         sta method
         lda selected
         jsr _boxListAt
 
-        lda #4
+        tsx
+        lda $103,x
         sta selected
 
         lda #method_select
@@ -343,11 +359,8 @@ _key_handledf:
         lda #method_action
         sta method
         lda selected
-        jsr _boxListAt                      
-
-!:      jmp empty
-
-
+        jsr _boxListAt
+        rts 
 
 _boxlist:
         ldy #0
