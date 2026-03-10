@@ -30,5 +30,5 @@ decrement:
 }
 
 .macro colourBox(str,x,y,colour){
-    box(colourboxesVtable,str,0,x,y,3,3,0,-1,colour,edge_col,styleWidget)
+    box(colourboxesVtable,str,str_help_csr,x,y,3,3,0,-1,colour,edge_col,styleWidget)
 }

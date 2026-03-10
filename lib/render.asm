@@ -6,8 +6,6 @@ celldst:
 .word cellbuffer2
 rule1:
 .byte 0,1,1, 1,1,0, 0,0
-ruledec:
-.byte 30
 rule4:
 .byte 1,2,3, 0,1,2, 2,0,3, 2
 endrule4:
@@ -239,11 +237,9 @@ _render_automata_col:
 
 automata4:
         jsr enter_fullscreen_multi
-        // lda fullscreen
-        // beq !+
         jsr initialise_ptrs_automata4
         jsr initialise_cells_automata4
-!:      jmp empty
+        jmp empty
         
 continue4:
         lda fullscreen
@@ -281,7 +277,7 @@ _one_cell_init4:
         bne !-
         lda #03
         sta cellbuffer1+[BUFFER_LENGTH/2]
-        jmp  _render_automata_row4
+        jmp  _randomize_rule
        
 _random_init4:
         lda $A2
@@ -294,6 +290,50 @@ _random_init4:
         pla
         dey
         bne !-
+
+_randomize_rule:
+        isBoxChecked(boxRandomR)
+        beq _render_automata_row4
+
+        jsr basic_random
+        ldy FPA1_mantissa+2
+        ldx #03
+ !:     tya
+        and #$03
+        sta rule4,X
+        tya
+        clc
+        ror
+        ror
+        tay
+        dex
+        bne !-
+        jsr basic_random
+        ldy FPA1_mantissa+2
+        ldx #03
+ !:     tya
+        and #$03
+        sta rule4+4,X
+        tya
+        clc
+        ror
+        ror
+        tay
+        dex
+        bne !-
+        jsr basic_random
+        ldy FPA1_mantissa+2
+        ldx #01
+ !:     tya
+        and #$03
+        sta rule4+8,X
+        tya
+        clc
+        ror
+        ror
+        tay
+        dex
+        bne !-        
                               
 _render_automata_row4:
         clc
@@ -312,8 +352,7 @@ _render_automata_row4:
         lda #20
         sta col_counter      
         
-        // render new row
-        
+        // render new row        
 _render_automata_col4:                
         //collect 4 pixels from buffer
         ldx #4

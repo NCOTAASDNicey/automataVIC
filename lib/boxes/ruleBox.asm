@@ -1,5 +1,5 @@
-bit4ruleVtable:
-     jsr doJumpTable
+bit4rule_vtable:
+    jsr doJumpTable
     .word renderrule4, handlerulekey4, select, deselect, update_rule4, empty, empty, empty
 
 renderrule4:

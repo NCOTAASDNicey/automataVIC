@@ -230,7 +230,6 @@ handlerulekeyb:
 !:      lda #0 //Dont signal program end
         rts
 
-
 lable_vtable:
     jsr doJumpTable
     .word render, handlekey, empty, empty, empty, empty, empty, empty
@@ -249,11 +248,7 @@ confirmboxes_vtable:
     
 confirmboxes4_vtable:
     jsr doJumpTable    
-    .word render, handlekey, select, deselect, automata4, empty, leave_fullscreen, continue4   
-    
-colourboxes_vtable:
-    jsr doJumpTable    
-    .word render, handlekeyc, select, deselect, empty, empty, empty, empty       
+    .word render, handlekey, select, deselect, automata4, empty, leave_fullscreen, continue4        
     
 rule4Index_vtable:
     jsr doJumpTable    
@@ -262,18 +257,11 @@ rule4Index_vtable:
 binaryrule_vtable:
     jsr doJumpTable
     .word render_ruleb, handlerulekeyb, select, deselect, update_ruleb, empty, empty, empty    
-
-bit4rule_vtable:
-    jsr doJumpTable
-    .word renderrule4, handlerulekey4, select, deselect, update_rule4, empty, empty, empty
     
 flow_vtable:
     jsr doJumpTable
     .word empty, flowKey, empty, empty, empty, empty, empty
-    
-toggleBoxes_vtable:
-    jsr doJumpTable
-   .word render, handlekey, select, deselect, toggle, render_toggle, empty, empty
+
 
 
 

@@ -4,9 +4,9 @@
 #import "lib/boxes/colourBox.asm"
 #import "lib/boxes/ruleBox.asm"
 
-.var hl=@"\$98\$12\$05"
+.var hl=@"\$1f\$12\$05"
 .var ml=@"\$12\$9E"
-.var ll=@"\$98\$92"
+.var ll=@"\$1f\$92"
 .var arr_u=@"\$61"
 .var arr_d=@"\$73"
 .var arr_l=@"\$78"
@@ -19,20 +19,28 @@ backStr: str("BCK")
 penStr: str("PEN")
 auxStr: str("AUX")
 bordStr: str("BOR")
-rndStr: str("RND")
+rndCStr: str("R/C")
+rndRStr: str("R/R")
 indStr: str("IND")
 automataStr: str("1D CELLULAR AUTOMATA")
-filenameLStr: .text "RULE"
-filenameSStr: .text "0Str:RULE"
+str_help_ruleb: str(ml+"0-7"+ll+" EDIT ");
+str_help_rule: str(ml+"0-9"+ll+" EDIT "+hl+"S"+ll+"AVE "+hl+"L"+ll+"OAD");
+str_help_rnd: str(ll+"RANDOM "+hl+"C"+ll+"ELLS ");
+str_help_rndr: str(ll+"RANDOM "+hl+"R"+ll+"ULE ");
+str_help_run1: str("1 BIT "+hl+"F1"+ll);
+str_help_run2: str("2 BIT "+hl+"F2"+ll);
+
+str_help_exit: str(ll+"E"+hl+"X"+ll+"IT");
+str_help_csr: str(ml+arr_u+ll+" "+ml+arr_d+ll+" CHANGE");
+str_help_run: str(ll+"RU"+hl+"N"+ll+" "+ml+return_char+ll+" NEXT "+ml+"SPACE"+ll+" SCROLL");
 ruleStr: str("********")
-rule4Str: str("**********")
 str_rule4: str("**********")
 styleAction: .byte 64, 64, 93, 93, 110, 112, 125, 109, 102
 styleSelected: .byte 98, 98+128, 97, 97+128, 123, 108, 126, 124, 160
 styleWidget: .byte 64, 64, 93, 93, 73, 85, 75, 74, 102
 styleTitle: .byte 98+128, 98, 97+128, 97, 127, 127+128, 127+128, 127, 127+128
 styleHelp: .byte 64, 64, 93, 93, 110, 112, 125, 109, 96
-str_help_blank: str(ll+"                ");
+str_help_blank: str(ll+"                    ");
 .const selected_col=cyan
 .const edge_col=white
 
@@ -76,22 +84,25 @@ boxHelp:
 box(lable_vtable,0,0,0,row6,22,3,1,1,blue,blue,styleHelp)
 
 boxRuleBinary:
-boxflagged(binaryrule_vtable,ruleStr,0,4,row2,12,5,2,2,white,white,styleWidget,1,0)
+boxflagged(binaryrule_vtable,ruleStr,str_help_ruleb,4,row2,12,5,2,2,white,white,styleWidget,1,0)
 
 boxRun:
-box(confirmboxes_vtable,runStr,0,17,row2,5,5,1,2,selected_col,edge_col,styleAction)
+box(confirmboxes_vtable,runStr,str_help_run1,17,row2,5,5,1,2,selected_col,edge_col,styleAction)
 
 boxRule4Index:
-box(rule4IndexVtable,indStr,0,0,row4+1,3,3,0,-1,white,white,styleWidget)
+box(rule4IndexVtable,indStr,str_help_csr,0,row4+1,3,3,0,-1,white,white,styleWidget)
 
 boxRuleBit4:
-box(bit4rule_vtable,str_rule4,0,3,row4,14,5,2,2,white,white,styleWidget)
+box(bit4rule_vtable,str_rule4,str_help_rule,3,row4,14,5,2,2,white,white,styleWidget)
 
 boxRun4:
-box(confirmboxes4_vtable,runStr,0,17,row4,5,5,1,2,selected_col,edge_col,styleAction)
+box(confirmboxes4_vtable,runStr,str_help_run2,17,row4,5,5,1,2,selected_col,edge_col,styleAction)
 
 boxRandom:
-toggleBox(rndStr,0,2,row3,0,-1,1)
+toggleBox(rndCStr,str_help_rnd,0,row3,0,-1,1)
+
+boxRandomR:
+toggleBox(rndRStr,str_help_rndr,3,row3,0,-1,1)
 
 boxColB:
 colourBox(bordStr,7,row3,green)
@@ -106,12 +117,12 @@ boxColA:
 colourBox(auxStr,19,row3,blue)
     
 boxExit:
-box(exitboxes_vtable,exitStr,0,16,row5,6,3,1,1,red,red,styleAction)
+box(exitboxes_vtable,exitStr,str_help_exit,16,row5,6,3,1,1,red,red,styleAction)
 
 boxFinal:
 box(boxes_vtable,exitStr,0,1,1,X_CHARS-2,Y_CHARS-2,2,2,white,red,styleSelected)
 
-.var boxesList = List().add(boxRuleBinary,boxRun,boxRule4Index,boxRuleBit4,boxRun4,boxRandom,boxColB,boxColR,boxColP,boxColA,boxExit)
+.var boxesList = List().add(boxRuleBinary,boxRun,boxRule4Index,boxRuleBit4,boxRun4,boxRandom,boxRandomR,boxColB,boxColR,boxColP,boxColA,boxExit)
 .const boxes_interactive_size = boxesList.size()
 .eval boxesList.add(title,boxHelp,flow)
 .const boxes_list_size = boxesList.size()

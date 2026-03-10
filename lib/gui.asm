@@ -189,13 +189,12 @@ noColourFill:
         printptratpos(box_legend,box_x,box_y)
 
 //print help
- !:     lda box_help
-        beq !+
-        lda box_select
+!:      lda box_select
         beq !+
         printat(str_help_blank,HELP_COL,HELP_ROW)
-        lda #0 // test
-        printptrat(boxHelp,HELP_COL,HELP_ROW)
+        lda box_help
+        beq !+
+        printptrat(box_help,HELP_COL,HELP_ROW)
 !:      jmp empty
        
         
@@ -317,9 +316,13 @@ _key_handledf:
         jsr rdBank
         jmp empty        
 
+!:      cmp #67 //R for Random cells
+        bne !+
+        toggleBoxChecked(boxRandom)
+
 !:      cmp #82 //R for Random rule
         bne !+
-        toggleBoxChecked(boxRandom)        
+        toggleBoxChecked(boxRandomR)                 
 
 !:      cmp #88 //X for Exit
         bne !+

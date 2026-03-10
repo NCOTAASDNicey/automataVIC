@@ -41,6 +41,8 @@
 .const  untlk=		$ffab
 .const  vector=		$ff8d
 
+.const basic_random= $e097
+
 // Character codes for the colors.
 
 //VIC Registers
@@ -107,6 +109,10 @@
 .const  lt_green=     13
 .const  lt_blue=      14
 .const  lt_yellow=    15
+
+.const FPA1_exponent= $61
+.const FPA1_mantissa= $62
+.const FPA1_sign= $66
 
 .const  zero_page_rs_232=   247
 
