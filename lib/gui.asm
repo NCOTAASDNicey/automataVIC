@@ -328,19 +328,31 @@ _key_handledf:
         bne !+
         jmp exit
 
-!:      cmp #133 //N for run
+!:      cmp #133 //F1 for run 1 bit
         bne !+
         lda #1
         pha
         jsr actionKey
         pla
 
-!:      cmp #137 //N for run
+!:      cmp #137 //F2 for run 2 bit
         bne !+
         lda #4
         pha
         jsr actionKey
-        pla                           
+        pla
+
+!:      cmp #134 //F3 for next rule
+        bne !+
+        jsr increment_i
+        lda #137
+        jmp !--
+
+!:      cmp #138 //F4 for previous rule
+        bne !+
+        jsr decrement_i
+        lda #137
+        jmp !---                                         
 
 !:      jmp empty
 

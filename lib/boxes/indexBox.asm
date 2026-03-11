@@ -4,38 +4,38 @@ rule4IndexVtable:
 
 
 
-handlekeyi: {
+handlekeyi: 
         jsr construct
         lda box_select
-        beq done
+        beq done_i
 
         lda keypress
         cmp #KEY_CSR_UP
-        beq increment
+        beq increment_i
         cmp #KEY_CSR_DOWN
-        beq decrement
-        jmp done
-read:   jsr rdBank
-done:   jmp empty
+        beq decrement_i
+        jmp done_i
+read_i:   jsr rdBank
+done_i:   jmp empty
 
 
-increment:
+increment_i:
         loadObjectByte(box_check)
         jsr writeBank
         clc
         adc #1
-wrapnread:
+wrapnread_i:
         and #$0F
         saveObjectByte(box_check)
-        jmp read
+        jmp read_i
 
-decrement:
+decrement_i:
         loadObjectByte(box_check)
         jsr writeBank
         sec
         sbc #1
-        jmp wrapnread
-}
+        jmp wrapnread_i
+
 
         
 render_index:
