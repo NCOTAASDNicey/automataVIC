@@ -27,14 +27,14 @@
         jsr dest
 }
 
-.macro offsetFromThis(obj) {
-        ldy #[obj-box_origin]
+.macro offsetFromThis(field) {
+        ldy #[field-box_origin]
 }
 
 // 1 - offset from this
 // 2 - target zero page pointer
-.macro loadObjectPointer(obj,ptr) {
-        offsetFromThis(obj)
+.macro loadObjectPointer(field,ptr) {
+        offsetFromThis(field)
         lda (this),Y
         sta ptr
         iny
@@ -43,25 +43,37 @@
 }
 
 // 1 - offset from this
-.macro loadObjectByte(obj) {
-        offsetFromThis(obj)
+.macro loadObjectByte(field) {
+        offsetFromThis(field)
         lda (this),Y
 }
 
 // 1 - offset from this
-.macro saveObjectByte(obj) {
-        offsetFromThis(obj)
+.macro saveObjectByte(field) {
+        offsetFromThis(field)
         sta (this),Y
 }
 
-.macro isBoxChecked(box) {
-        lda [box+jmp_header_size+[box_check-box_origin]]        
+.macro loadBoxField(box,field) {
+        lda [box+jmp_header_size+[field-box_origin]]        
+}
+
+.macro saveBoxField(box,field) {
+        sta [box+jmp_header_size+[field-box_origin]]        
+}
+
+.macro loadBoxChecked(box) {
+        loadBoxField(box,box_check)       
+}
+
+.macro saveBoxChecked(box) {
+        saveBoxField(box,box_check)       
 }
 
 .macro toggleBoxChecked(box) {
-        lda [box+jmp_header_size+[box_check-box_origin]]
+        loadBoxChecked(box)
         eor #$1
-        sta [box+jmp_header_size+[box_check-box_origin]]
+        saveBoxChecked(box)
 }
 
 .macro markBoxEdited(box) {

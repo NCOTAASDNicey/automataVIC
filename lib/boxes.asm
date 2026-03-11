@@ -53,10 +53,10 @@ flow:
 .macro boxflagged(vtable,str,help,x,y,w,h,xo,yo,scol,ecol,style,selected,checked) {
   jmp vtable
   .byte BOX_DATA_SIZE
-  .word box_origin 
+  .word box_origin
   .word screen_mem_hi + x + [X_CHARS*y]
   .word colour_mem_hi + x + [X_CHARS*y]
-  .byte x+xo,y+yo,w,h
+  .byte x,y,w,h,x+xo,y+yo
   .byte scol,ecol
   .word style
   .word str

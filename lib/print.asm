@@ -25,6 +25,18 @@
         printptr(str)
 }
 
+.macro at(x,y) {
+        clc
+        ldy #x
+        ldx #y
+        jsr plot         
+}
+
+.macro textColour(col) {
+        lda #col
+        sta chrout_colour       
+}
+
 .macro print(str) {
         lda #<str
         ldx #>str        
@@ -32,17 +44,13 @@
 }
 
 .macro printat(str,col,row) {
-        clc
-        ldy #col
-        ldx #row
-        jsr plot        
+        at(col,row)       
         print(str)
 }
 
 .macro printhex(col,reverse) {
         enterProc()
-        lda #col
-        sta chrout_colour
+        textColour(col)
         lda #reverse
         sta 199
         tsx

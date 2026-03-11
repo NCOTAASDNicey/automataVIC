@@ -13,21 +13,20 @@ toggle:
         
 render_toggle:
         jsr construct
+        ldy box_x
+        iny
+        ldx box_y
+        inx
         clc
-        lda box_origin
-        adc #X_CHARS+1
-        sta _chptr
-        lda box_origin+1
-        adc #0 
-        sta _chptr+1                
-
+        jsr plot         
+        lda box_colour
+        sta chrout_colour
         lda box_check
         bne !+
-        lda #87        
+        lda #119        
         jmp !++
-!:      lda #81
-!:      ldy #0
-        sta (_chptr),Y
+!:      lda #113
+!:      jsr chrout
         jmp empty
 
 .macro toggleBox(str,help,x,y,xo,yo,state){

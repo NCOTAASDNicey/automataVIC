@@ -28,6 +28,8 @@ box_x: .byte 0
 box_y: .byte 0
 box_width: .byte 0
 box_height: .byte 0
+box_legend_x: .byte 0
+box_legend_y: .byte 0
 box_colour: .byte 0
 box_frame_colour: .byte 0
 box_style: .word 0

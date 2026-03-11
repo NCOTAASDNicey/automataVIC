@@ -45,7 +45,7 @@ initialise_ptrs_automata:
 
 initialise_cells_automata:        
         // clear and initailise src buffer
-        isBoxChecked(boxRandom)
+        loadBoxChecked(boxRandom)
         bne _random_init              
 
 _one_cell_init:      
@@ -266,7 +266,7 @@ initialise_ptrs_automata4:
 
 initialise_cells_automata4:     
         // clear and initailise src buffer
-        isBoxChecked(boxRandom)
+        loadBoxChecked(boxRandom)
         bne _random_init4              
 
 _one_cell_init4:      
@@ -292,7 +292,7 @@ _random_init4:
         bne !-
 
 _randomize_rule:
-        isBoxChecked(boxRandomR)
+        loadBoxChecked(boxRandomR)
         beq _render_automata_row4
 
         jsr basic_random

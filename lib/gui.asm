@@ -10,16 +10,17 @@
 
 select:
         jsr construct
-        ldy #[box_select-box_origin]
+        // ldy #[box_select-box_origin]
         lda #1
-        sta (this),Y
+        // sta (this),Y
+        saveObjectByte(box_select)
         jmp empty
         
 deselect:
         jsr construct
-        ldy #[box_select-box_origin]
+        // ldy #[box_select-box_origin]
         lda #0
-        sta (this),Y
+        saveObjectByte(box_select)
         jmp empty
 
 render:
@@ -186,7 +187,7 @@ noColourFill:
         lda #0
 !:      sta 199
 
-        printptratpos(box_legend,box_x,box_y)
+        printptratpos(box_legend,box_legend_x,box_legend_y)
 
 //print help
 !:      lda box_select
@@ -302,7 +303,7 @@ _key_handledf:
 
 !:      cmp #83 //S for Save
         bne !+
-        isBoxChecked(boxRule4Index)
+        loadBoxChecked(boxRule4Index)
         jsr writeBank        
         jsr saveRule
         lda #0
@@ -312,7 +313,7 @@ _key_handledf:
 !:      cmp #76 //L for Load
         bne !+
         jsr loadRule
-        isBoxChecked(boxRule4Index)
+        loadBoxChecked(boxRule4Index)
         jsr rdBank
         jmp empty        
 

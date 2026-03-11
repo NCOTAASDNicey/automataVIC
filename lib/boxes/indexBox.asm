@@ -6,7 +6,7 @@ rule4IndexVtable:
 
 handlekeyi: 
         jsr construct
-        lda box_select
+        loadBoxField(boxRule4Index,box_select)
         beq done_i
 
         lda keypress
@@ -20,17 +20,17 @@ done_i:   jmp empty
 
 
 increment_i:
-        loadObjectByte(box_check)
+        loadBoxChecked(boxRule4Index)
         jsr writeBank
         clc
         adc #1
 wrapnread_i:
         and #$0F
-        saveObjectByte(box_check)
+        saveBoxChecked(boxRule4Index)
         jmp read_i
 
 decrement_i:
-        loadObjectByte(box_check)
+        loadBoxChecked(boxRule4Index)
         jsr writeBank
         sec
         sbc #1
@@ -39,24 +39,19 @@ decrement_i:
 
         
 render_index:
-        jsr construct
-        clc
-        lda box_origin
-        adc #X_CHARS+1
-        sta _chptr
-        lda box_origin+1
-        adc #0
-        sta _chptr+1                
-
-        loadObjectByte(box_check)
+        // jsr construct             
+        loadBoxField(boxRule4Index,box_x)
+        tay
+        iny
+        loadBoxField(boxRule4Index,box_y)
         tax
-        cpx #10
-        bcc !+   //10 or more
-        sbc #9
-        jmp !++
-!:      adc #48
-!:      ldy #0
-        sta (_chptr),Y
+        inx
+        clc
+        jsr plot
+        lda box_colour
+        sta chrout_colour                 
+        loadBoxChecked(boxRule4Index)
+        jsr _hexDigit
         jmp empty
 
 _bankPtrs:
