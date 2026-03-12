@@ -3,6 +3,7 @@
 #import "lib/boxes/toggleBox.asm"
 #import "lib/boxes/colourBox.asm"
 #import "lib/boxes/ruleBox.asm"
+#import "lib/boxes/ruleBoxB.asm"
 
 .var hl=@"\$1f\$12\$05"
 .var ml=@"\$12\$9E"

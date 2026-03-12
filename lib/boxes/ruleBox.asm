@@ -3,21 +3,11 @@ bit4rule_vtable:
     .word renderrule4, handlerulekey4, select, deselect, update_rule4, empty, empty, empty
 
 renderrule4:
-        lda #<rule4
-        sta _chptr
-        lda #>rule4
-        sta _chptr+1
-
-        lda #<str_rule4
-        sta _styleptr
-        lda #>str_rule4
-        sta _styleptr+1
-
         ldy #0
-!:      lda (_chptr),Y
+!:      lda rule4,Y
         clc
         adc #48
-        sta (_styleptr),Y
+        sta str_rule4,Y
         iny
         cpy #10
         bne !-
@@ -45,25 +35,16 @@ update_rule4:
         bpl !+
         lda #9
  !:     tay
-        lda #<rule4
-        sta _chptr
-        lda #>rule4
-        sta _chptr+1
 
-        lda #<str_rule4
-        sta _styleptr
-        lda #>str_rule4
-        sta _styleptr+1
-
-        lda (_chptr),Y
+        lda rule4,Y
         clc
         adc #1
         and #3
-        sta (_chptr),Y
+        sta rule4,Y
         adc #48
-        sta (_styleptr),Y
+        sta str_rule4,Y
         lda #0
         rts
         
-rule:
-.byte 0,1,1, 1,1,0, 0,0
+rule4:
+.byte 1,2,3, 0,1,2, 2,0,3, 2

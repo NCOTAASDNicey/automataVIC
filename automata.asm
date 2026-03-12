@@ -12,7 +12,6 @@
 .const BYTES_PER_CHAR=8
 .const BUFFER_LENGTH=COLUMNS*PIXELS_PER_BYTE
 .const MONO_BUFFER_LENGTH=COLUMNS*MONO_PIXELS_PER_BYTE
-.const RULE_LENGTH=10
 .const HELP_COL=1
 .const HELP_ROW=21
 
@@ -28,6 +27,10 @@
 #import "lib/boxes.asm"
 #import "lib/file.asm"
 #import "lib/gui.asm"
+#import "lib/print.asm"
+#import "lib/screenModes.asm"   
+#import "lib/render.asm"
+
 mainProg:
         cls()
         screen_col(black, black)
@@ -179,57 +182,6 @@ waitkey:
     beq waitkey    
     rts
 
-#import "lib/print.asm"
-#import "lib/screenModes.asm"   
-#import "lib/render.asm"   
-
-update_ruleb:
-        sec
-        sbc #49
-        tay        
-        lda rule,Y
-        eor #1
-        sta rule,Y
-        cmp #1
-        beq !+
-        lda #48
-        jmp !++    
-!:      lda #49
-!:      sta ruleStr,Y    
-        lda #0
-        rts
-        
-render_ruleb:
-        ldy #0 
-!:      lda rule,Y
-        cmp #1
-        beq !+
-        lda #48
-        jmp !++    
-!:      lda #49
-!:      sta ruleStr,Y
-        iny
-        cpy #8
-        bne !--- 
-
-        jsr render
-        rts        
-        
-handlerulekeyb:
-        jsr construct
-        lda #1
-        cmp box_select
-        bne !+
-        lda keypress      
-        cmp #48
-        bcc !+ 
-        cmp #57
-        bcs !+        
-        ldy #method_action
-        jsr reinvokevirtual
-!:      lda #0 //Dont signal program end
-        rts
-
 lable_vtable:
     jsr doJumpTable
     .word render, handlekey, empty, empty, empty, empty, empty, empty
@@ -253,20 +205,7 @@ confirmboxes4_vtable:
 rule4Index_vtable:
     jsr doJumpTable    
     .word render, handlekeyi, select, deselect, empty, render_index, empty, empty       
-    
-binaryrule_vtable:
-    jsr doJumpTable
-    .word render_ruleb, handlerulekeyb, select, deselect, update_ruleb, empty, empty, empty    
-    
+
 flow_vtable:
     jsr doJumpTable
     .word empty, flowKey, empty, empty, empty, empty, empty
-
-
-
-
-
-
- 
-
-

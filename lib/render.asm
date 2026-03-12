@@ -4,11 +4,6 @@ cellsrc:
 .word cellbuffer1
 celldst:
 .word cellbuffer2
-rule1:
-.byte 0,1,1, 1,1,0, 0,0
-rule4:
-.byte 1,2,3, 0,1,2, 2,0,3, 2
-endrule4:
 
 rule4index:
 .byte 0
