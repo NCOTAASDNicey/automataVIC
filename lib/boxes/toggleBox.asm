@@ -2,14 +2,12 @@ toggleBoxesVtable:
      jsr doJumpTable
    .word render, handlekey, select, deselect, toggle, render_toggle, empty, empty
 
-
 toggle:
         jsr construct
         loadObjectByte(box_check)
         eor #1
         sta (this),Y
         jmp empty
-
         
 render_toggle:
         jsr construct

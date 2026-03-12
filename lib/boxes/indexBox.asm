@@ -1,8 +1,6 @@
 rule4IndexVtable:
      jsr doJumpTable    
-    .word render, handlekeyi, select, deselect, empty, render_index, empty, empty       
-
-
+    .word render, handlekeyi, select, deselect, empty, render_index, empty, empty
 
 handlekeyi: 
         jsr construct
@@ -15,8 +13,8 @@ handlekeyi:
         cmp #KEY_CSR_DOWN
         beq decrement_i
         jmp done_i
-read_i:   jsr rdBank
-done_i:   jmp empty
+read_i: jsr rdBank
+done_i: jmp empty
 
 
 increment_i:
@@ -35,9 +33,7 @@ decrement_i:
         sec
         sbc #1
         jmp wrapnread_i
-
-
-        
+       
 render_index:
         // jsr construct             
         loadBoxField(boxRule4Index,box_x)

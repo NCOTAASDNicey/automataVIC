@@ -25,8 +25,7 @@ renderrule4:
         rts
 
 handlerulekey4: 
-        jsr construct
-        lda box_select
+        loadBoxField(boxRuleBit4,box_select)
         beq !+
 
         lda keypress           
@@ -35,11 +34,8 @@ handlerulekey4:
         cmp #58
         bcs !+
 
-        ldy #method_action
-        jsr reinvokevirtual
-        jsr construct
-        lda #1
-        saveObjectByte(box_edited)
+        jsr update_rule4
+        markBoxEdited(boxRuleBit4)
 !:      jmp empty
 
 
