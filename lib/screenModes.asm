@@ -134,14 +134,12 @@ leave_fullscreen:
         cls()
         screen_col(black, black)
        
-        lda VIC_rows
-        and #128
-        ora #[2*23]
+        lda #[2*Y_CHARS]
         sta VIC_rows
         
         lda VIC_columns
         and #128
-        ora #22
+        ora #X_CHARS
         sta VIC_columns
         
         lda VIC_h_center
