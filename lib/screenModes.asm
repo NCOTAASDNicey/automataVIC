@@ -2,6 +2,38 @@
 #import "macros.asm"
 #import "zero.asm"
 
+fullscreen_cols:
+.byte 0
+fullscreen_rows:
+.byte 0
+fullscreen_dhrows:
+.byte 0
+fullscreen_total:
+.byte 0
+cells_width_1bit:
+.byte 0
+cells_width_2bit:
+.byte 0
+
+.macro setFullscreenSize(x,y) {
+        lda #x
+        sta fullscreen_cols
+        lda #x*8
+        sta cells_width_1bit
+        lda #x
+        sta cells_width_2bit                
+        lda #y
+        sta fullscreen_rows
+        lda #y>>1
+        sta fullscreen_dhrows        
+        lda #x*y
+        sta fullscreen_total
+        rts         
+}
+
+setFullscreenSize20x22:
+        setFullscreenSize(20,24)      
+
 enter_fullscreen:
         lda #0
         sta multicolour
@@ -18,13 +50,13 @@ _enter_fullscreen:
 !:      cls()
         ldy #[box_colour-box_origin]
         clc      
-        lda [boxColB+jmp_header_size],Y        
+        lda [boxColR+jmp_header_size],Y        
         asl
         asl
         asl
         asl
         ora #8
-        ora [boxColR+jmp_header_size],Y      
+        ora [boxColB+jmp_header_size],Y      
         sta VIC_screen
         
         lda [boxColA+jmp_header_size],Y        
@@ -40,12 +72,12 @@ _enter_fullscreen:
         sta VIC_rows
         lda VIC_char_mem
         and #240
-        ora #12
+        ora fullscreen_dhrows
         sta VIC_char_mem
         
         lda VIC_columns
         and #128
-        ora #20
+        ora fullscreen_cols
         sta VIC_columns
         
         lda VIC_h_center
@@ -90,7 +122,7 @@ _enter_fullscreen:
         ldy #0
 !:      sta colour_mem_hi,Y
         iny
-        cpy #242
+        cpy #fullscreen_total
         bne !-
 !:      lda #1
         sta fullscreen        

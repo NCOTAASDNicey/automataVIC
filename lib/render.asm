@@ -9,6 +9,7 @@ rule4index:
 .byte 0
 
 automata:
+        jsr setFullscreenSize20x22
         jsr enter_fullscreen
         jsr initialise_ptrs_automata
         jsr initialise_cells_automata
@@ -29,7 +30,11 @@ initialise_ptrs_automata:
         lda #>bitmap
         sta row_start+1
         
-        lda #[11*16]
+        lda fullscreen_dhrows
+        asl
+        asl
+        asl
+        asl
         sta row_counter
         
         lda  cellsrc
@@ -44,17 +49,21 @@ initialise_cells_automata:
         bne _random_init              
 
 _one_cell_init:      
-        ldy #[8*20]        
+        ldy cells_width_1bit        
         lda #0
-!:       sta (_tempptr),Y
+!:      sta (_tempptr),Y
         dey
         bne !-
+        lda cells_width_1bit
+        clc
+        ror
+        tay
         lda #01
-        sta cellbuffer1+[BUFFER_LENGTH/2]
+        sta (_tempptr),Y
         jmp  _render_automata_row
        
 _random_init:
-       ldy #[8*20]                
+       ldy cells_width_1bit                
 !:      lda 0,Y
        and #01
        sta (_tempptr),Y
@@ -231,6 +240,7 @@ _render_automata_col:
 
 
 automata4:
+        jsr setFullscreenSize20x22
         jsr enter_fullscreen_multi
         jsr initialise_ptrs_automata4
         jsr initialise_cells_automata4
@@ -250,7 +260,11 @@ initialise_ptrs_automata4:
         lda #>bitmap
         sta row_start+1
         
-        lda #[11*16]
+        lda fullscreen_dhrows
+        asl
+        asl
+        asl
+        asl
         sta row_counter        
         
         lda  cellsrc
@@ -265,19 +279,23 @@ initialise_cells_automata4:
         bne _random_init4              
 
 _one_cell_init4:      
-        ldy #[4*20]+2        
+        ldy cells_width_2bit        
         lda #0
 !:      sta (_tempptr),Y
         dey
         bne !-
+        lda cells_width_2bit
+        clc
+        ror
+        tay
         lda #03
-        sta cellbuffer1+[BUFFER_LENGTH/2]
+        sta (_tempptr),Y
         jmp  _randomize_rule
        
 _random_init4:
         lda $A2
         clc
-        ldy #[4*20]+2                
+        ldy cells_width_2bit                
 !:      adc 0,Y
         pha
         and #03
@@ -344,7 +362,7 @@ _render_automata_row4:
         lda row_start+1
         sta _chptr+1
 
-        lda #20
+        lda fullscreen_cols
         sta col_counter      
         
         // render new row        

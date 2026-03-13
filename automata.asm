@@ -5,8 +5,8 @@
 .const edited_col=red
 .const active_col=cyan
 
-.const COLUMNS=22
-.const ROWS=23
+.const COLUMNS=X_CHARS
+.const ROWS=Y_CHARS
 .const PIXELS_PER_BYTE=4
 .const MONO_PIXELS_PER_BYTE=8
 .const BYTES_PER_CHAR=8

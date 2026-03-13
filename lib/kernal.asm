@@ -91,8 +91,6 @@
 .const  KEY_RETURN= 13
 .const  KEY_ESC= 3
 
-
-
 .const  black=        0
 .const  white=        1
 .const  red=          2
