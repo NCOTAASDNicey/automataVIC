@@ -9,7 +9,7 @@ rule4index:
 .byte 0
 
 automata:
-        jsr setFullscreenSize20x22
+        jsr setFullscreenSize
         jsr enter_fullscreen
         jsr initialise_ptrs_automata
         jsr initialise_cells_automata
@@ -84,7 +84,7 @@ _render_automata_row:
         lda row_start+1
         sta _chptr+1
 
-        lda #20
+        lda fullscreen_cols
         sta col_counter      
         
         // render new row
@@ -166,13 +166,14 @@ _render_automata_col:
         sta _tempptr+1
                
         //exchange last first and cells
-        ldy #160
+        ldy cells_width_1bit
         lda (_chptr),Y
         ldy #0
         sta (_chptr),Y
         ldy #1     
         lda (_chptr),Y
-        ldy #161        
+        ldy cells_width_1bit
+        iny        
         sta (_chptr),Y                         
                              
         ldy #1
@@ -240,7 +241,7 @@ _render_automata_col:
 
 
 automata4:
-        jsr setFullscreenSize20x22
+        jsr setFullscreenSize
         jsr enter_fullscreen_multi
         jsr initialise_ptrs_automata4
         jsr initialise_cells_automata4
@@ -445,16 +446,20 @@ _render_automata_col4:
         sta _tempptr+1
                
         //exchange last first and cells
-        ldy #80
+        ldy cells_width_2bit
         lda (_chptr),Y
         ldy #0
         sta (_chptr),Y
 
         ldy #1     
         lda (_chptr),Y
-        ldy #81        
+        ldy cells_width_2bit
+        iny
         sta (_chptr),Y                         
                              
+        ldy cells_width_2bit
+        iny
+        sty _scratch
         ldy #0
         
 !:      dey
@@ -479,7 +484,7 @@ _render_automata_col4:
         sta (_tempptr),Y  //Save new cell value at current index on output ptr
         iny               //Advance current index
          
-        cpy #81          //Repeat until all cells processed
+        cpy _scratch      //Repeat until all cells processed
         bne !-                    
 
         //swap pointers

@@ -20,19 +20,20 @@ cells_width_2bit:
         sta fullscreen_cols
         lda #x*8
         sta cells_width_1bit
-        lda #x
+        lda #x*4
         sta cells_width_2bit                
         lda #y
         sta fullscreen_rows
-        lda #y>>1
+        lda #y/2
         sta fullscreen_dhrows        
-        lda #x*y
+        lda #x*(y/2)
         sta fullscreen_total
         rts         
 }
 
-setFullscreenSize20x22:
+setFullscreenSize:
         setFullscreenSize(20,24)      
+        // setFullscreenSize(24,20)      
 
 enter_fullscreen:
         lda #0
@@ -66,26 +67,26 @@ _enter_fullscreen:
         asl     
         sta VIC_volume               
         
-        lda VIC_rows
-        and #129
-        ora #1+[2*11]
+        lda fullscreen_rows
+        ora #1
         sta VIC_rows
+
         lda VIC_char_mem
-        and #240
-        ora fullscreen_dhrows
+        and #$F0
+        ora #$C
         sta VIC_char_mem
         
         lda VIC_columns
-        and #128
+        and #$80
         ora fullscreen_cols
         sta VIC_columns
         
         lda VIC_h_center
-        and #254
+        and #$FE
         ora #6
         sta VIC_h_center
 
-        lda #46
+        lda #38
         sta VIC_v_center                         
         
         //Clear character map
@@ -110,7 +111,7 @@ _enter_fullscreen:
 !:      sta screen_mem_hi,Y
         adc #1
         iny
-        cpy #242
+        cpy fullscreen_total
         bne !-
 
         //Character colour
@@ -122,7 +123,7 @@ _enter_fullscreen:
         ldy #0
 !:      sta colour_mem_hi,Y
         iny
-        cpy #fullscreen_total
+        cpy fullscreen_total
         bne !-
 !:      lda #1
         sta fullscreen        
