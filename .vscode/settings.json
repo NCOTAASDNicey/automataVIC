@@ -1,5 +1,5 @@
 {
   "vs64.buildArgs": "",
-  "vs64.viceExecutable": "/Applications/vice-x86-64-gtk3-3.10/bin/xvic",
-  "vs64.viceArgs": "-memory 24k -drive9type 1542 -9 /Users/nicey/Develop/GitHubProjects/automataVIC/drive9.d64"
+  "vs64.viceExecutable": "/Applications/vice-arm64-sdl2-3.10/bin/xvic",
+  "vs64.viceArgs": "-memory 24k -drive9type 1542 -9 $HOME/Develop/automataVIC/drive9.d64"
 }
